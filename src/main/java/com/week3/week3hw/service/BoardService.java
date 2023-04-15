@@ -1,5 +1,6 @@
 package com.week3.week3hw.service;
 
+import com.week3.week3hw.DTO.BoardPasswordDto;
 import com.week3.week3hw.DTO.BoardRequestDto;
 import com.week3.week3hw.DTO.BoardResponseDto;
 import com.week3.week3hw.entity.Board;
@@ -53,14 +54,14 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardResponseDto updateBoard(Long id, BoardRequestDto boardRequestDto, String password){
+    public BoardResponseDto updateBoard(Long id, BoardRequestDto boardRequestDto){
 
 
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("선택한 게시글이 없습니다.")
         );
 
-        if (!board.getPassword().equals(password)) {
+        if (!board.getPassword().equals(boardRequestDto.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
@@ -69,12 +70,12 @@ public class BoardService {
         return new BoardResponseDto(board);
     }
 
-    public String deleteBoard(Long id, String password){
+    public String deleteBoard(Long id, BoardPasswordDto boardPasswordDto){
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("선택한 게시글이 없습니다.")
         );
 
-        if (!board.getPassword().equals(password)) {
+        if (!board.check(boardPasswordDto)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 

@@ -1,5 +1,6 @@
 package com.week3.week3hw.entity;
 
+import com.week3.week3hw.DTO.BoardPasswordDto;
 import com.week3.week3hw.DTO.BoardRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -41,5 +42,9 @@ public class Board extends TimeStamped{
         this.title = boardRequestDto.getTitle();
         this.author = boardRequestDto.getAuthor();
         this.contents = boardRequestDto.getContents();
+    }
+
+    public boolean check(BoardPasswordDto boardPasswordDto){
+        return this.password.equals(boardPasswordDto.getPassword());
     }
 }
